@@ -10,8 +10,6 @@
 
 
 using System;
-// using System.Text;
-// Application, MessageBox, etc.
 using System.Windows.Forms;
 using System.IO;
 
@@ -30,7 +28,8 @@ public SysIO()
 
 
 
-internal bool directoryExists( string dirName )
+static internal bool directoryExists(
+                              string dirName )
 {
 try
 {
@@ -48,7 +47,8 @@ catch( Exception )
 }
 
 
-internal void createDirectory( string dirName )
+static internal void createDirectory(
+                            string dirName )
 {
 try
 {

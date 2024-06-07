@@ -28,10 +28,8 @@ return toCheck.Contains( pattern );
 internal static string forTest( string toTest )
 {
 return toTest + "this and that.";
-} 
+}
 
 
 
 } // Class
-
-

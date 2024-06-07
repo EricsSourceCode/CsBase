@@ -1,32 +1,31 @@
-// Copyright  Mineralab LLC, 2012 - 2021.
+// Copyright Eric Chauvin 2024.
+
+
+
+// This is licensed under the GNU General
+// Public License (GPL).  It is the
+// same license that Linux has.
+// https://www.gnu.org/licenses/gpl-3.0.html
+
+
+
+// See https://ericssourcecode.github.io/
+// For guides and information.
 
 
 
 using System;
-using System.Text;
+
+
+
+// namespace
+
 
 
 /*
 UTF-8 (UCS Transformation Format -8)
 UCS: Universal Character Set
 
-
-http://en.wikipedia.org/wiki/Unicode
-http://en.wikipedia.org/wiki/UTF-8
-http://en.wikipedia.org/wiki/Wide_character
-http://en.wikipedia.org/wiki/UTF-16
-http://en.wikipedia.org/wiki/Basic_Multilingual_Plane
-http://en.wikipedia.org/wiki/Universal_Character_Set
-
-Comments from Wikipedia:
-
-The first 128 characters of the Unicode character set, which correspond
-one-to-one with ASCII, are encoded using a single octet with the same
-binary value as the corresponding ASCII character, making valid ASCII text
-valid UTF-8-encoded Unicode text as well.
-
-For every UTF8 byte sequence corresponding to a single Unicode character,
-the first byte unambiguously indicates the length of the sequence in bytes.
 
 One-byte ASCII:
 7  U+007F  0xxxxxxx
@@ -292,8 +291,8 @@ As of Unicode 6.0, the BMP comprises the following blocks:
 
 */
 
-namespace RadNetWin
-{
+
+
   static class UTF8Strings
   {
 
@@ -498,7 +497,7 @@ namespace RadNetWin
     }
 
 
+*/
 
 
-  }
-}
+} // Class
