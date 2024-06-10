@@ -10,7 +10,7 @@
 
 
 using System;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 using System.IO;
 
 
@@ -37,12 +37,10 @@ return Directory.Exists( dirName );
 }
 catch( Exception )
   {
-  MessageBox.Show(
-        "Could not check\r\n" + dirName,
-        "SysIO",
-       MessageBoxButtons.OK);
+  string showS =
+    "SysIO could not check dir: " + dirName;
 
-  return false;
+  throw new Exception( showS );
   }
 }
 
@@ -58,12 +56,10 @@ if( !Directory.Exists( dirName ))
 }
 catch( Exception )
   {
-  MessageBox.Show(
-        "Could not create\r\n" + dirName,
-        "SysIO",
-       MessageBoxButtons.OK);
+  string showS =
+    "SysIO could not create dir: " + dirName;
 
-  return;
+  throw new Exception( showS );
   }
 }
 

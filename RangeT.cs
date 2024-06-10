@@ -23,10 +23,12 @@ internal static void test( int where,
                            string showS )
 {
 if( where < min )
-  throw new Exception( "Range test: " + showS );
+  throw new Exception(
+             "Range test min: " + showS );
 
 if( where > max )
-  throw new Exception( "Range test: " + showS );
+  throw new Exception(
+            "Range test mex: " + showS );
 
 }
 
