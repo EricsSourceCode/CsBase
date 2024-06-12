@@ -107,15 +107,22 @@ last = 0;
 
     return cArray.getC( where );
     }
+*/
 
-  inline Uint8 getU8( const Int32 where ) const
-    {
-    if( where >= last )
-      throw "getU8() past last.";
 
-    return cArray.getU8( where );
-    }
 
+internal byte getU8( int where )
+{
+if( where >= last )
+  throw new Exception( 
+               "getU8() past last." );
+
+return bArray.getVal( where );
+}
+
+
+
+/*
   inline void setC( const Int32 where,
                     const char toSet )
     {
@@ -428,37 +435,36 @@ last++;
 cArray.setU8( last, (toSet & 0xFF) );
 last++;
 }
+*/
 
 
 
-void CharBuf::appendU32( const Uint32 toSet )
+internal void appendU32( uint toSet )
 {
 // Big endian.
-Uint8 toAdd = Casting::u32ToU8(
-                         toSet >> (3 * 8) );
+byte toAdd = (byte)(toSet >> (3 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u32ToU8(
-                         toSet >> (2 * 8) );
+toAdd = (byte)( toSet >> (2 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u32ToU8(
-                         toSet >> (1 * 8) );
+toAdd = (byte)( toSet >> (1 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u32ToU8( toSet );
+toAdd = (byte)( toSet );
 appendU8( toAdd );
 }
 
 
 
-void CharBuf::appendU64( const Uint64 toSet )
+
+internal void appendU64( ulong toSet )
 {
 // Big endian.
-Uint8 toAdd = Casting::u64ToU8(
-                         toSet >> (7 * 8) );
+byte toAdd = (byte)(toSet >> (7 * 8));
 appendU8( toAdd );
 
+/*
 toAdd = Casting::u64ToU8( toSet >> (6 * 8) );
 appendU8( toAdd );
 
@@ -479,17 +485,18 @@ appendU8( toAdd );
 
 toAdd = Casting::u64ToU8( toSet );
 appendU8( toAdd );
+*/
 }
 
 
 
-Uint32 CharBuf::getU32( const Int32 where ) const
+internal uint getU32( int where )
 {
 // Big endian.
-Uint32 toSet = getU8( where );
+uint toSet = getU8( where );
 toSet <<= 8;
 
-Uint32 nextC = getU8( where + 1 );
+uint nextC = getU8( where + 1 );
 toSet |= nextC;
 toSet <<= 8;
 
@@ -504,6 +511,7 @@ return toSet;
 }
 
 
+/*
 Uint64 CharBuf::getU64( const Int32 where ) const
 {
 // Big endian.
@@ -619,19 +627,20 @@ for( Int32 count = 0; count < howMany; count++ )
   last++;
   }
 }
+*/
 
 
 
-void CharBuf::copy( const CharBuf& toCopy )
+internal void copy( ByteBuf toCopy )
 {
 last = toCopy.last;
 
-cArray.copy( toCopy.cArray, last,
-                   toCopy.cArray.getSize() );
+bArray.copy( toCopy.bArray );
 }
 
 
 
+/*
 void CharBuf::copyToCharArray( ByteArray& copyTo )
 {
 const Int32 max = getLast();
@@ -729,6 +738,7 @@ if( test != test2 )
   throw "CharBuf test basics.";
 
 }
+
 
 
 // === Move this into ByteArray.
@@ -834,28 +844,34 @@ for( Int32 count = 0; count < max; count++ )
   appendChar( tempBuf.getC( count ));
 
 }
+*/
 
 
 
-void CharBuf::showHex( void ) const
+internal string getHexStr()
 {
-const Int32 max = getLast();
-for( Int32 count = 0; count < max; count++ )
+string result = "";
+
+int max = getLast();
+for( int count = 0; count < max; count++ )
   {
-  Uint8 oneByte = getU8( count );
+  byte oneByte = getU8( count );
+/*
   char leftC = ByteHex::getLeftChar( oneByte );
   StIO::putChar( leftC );
   char rightC = ByteHex::getRightChar( oneByte );
   StIO::putChar( rightC );
   StIO::putChar( ' ' );
+*/
   }
 
-StIO::putLF();
+
+return result;
 }
 
 
 
-
+/*
 void CharBuf::showAscii( void ) const
 {
 const Int32 max = getLast();
