@@ -114,7 +114,7 @@ last = 0;
 internal byte getU8( int where )
 {
 if( where >= last )
-  throw new Exception( 
+  throw new Exception(
                "getU8() past last." );
 
 return bArray.getVal( where );

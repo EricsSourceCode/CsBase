@@ -194,7 +194,7 @@ int max = inBuf.getLast();
 
 for( int count = max - 1; count >= 0; count-- )
   {
-  int digit = charToU8( 
+  int digit = charToU8(
                    (char)inBuf.getU8( count ));
   digit = digit * positionBase;
   result += digit;
@@ -212,5 +212,3 @@ return result;
 
 
 } // Class
-
-
