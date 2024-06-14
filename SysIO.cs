@@ -10,6 +10,7 @@
 
 
 using System;
+using System.Text;
 // using System.Windows.Forms;
 using System.IO;
 
@@ -61,6 +62,45 @@ catch( Exception )
 
   throw new Exception( showS );
   }
+}
+
+
+
+static internal bool fileExists( string inFile )
+{
+return File.Exists( inFile );
+}
+
+
+static internal void fileDelete( string inFile )
+{
+File.Delete( inFile );
+}
+
+
+static internal void fileCopy( string fromFile,
+                               string toFile,
+                               bool overWrite )
+{
+File.Copy( fromFile, toFile, overWrite );
+}
+
+
+static internal string readAllText( 
+                        string fromFile )
+{
+return File.ReadAllText( fromFile,
+                         Encoding.UTF8 );
+}
+
+
+
+static internal void writeAllText( 
+                        string toFile,
+                        string toWrite )
+{
+File.WriteAllText( toFile, toWrite,
+                   Encoding.UTF8 );
 }
 
 

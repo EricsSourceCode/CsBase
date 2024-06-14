@@ -77,28 +77,6 @@ last = 0;
 
 
 /*
-  void copyToCharArray( ByteArray& copyTo );
-
-  void copyToOpenCharArrayNoNull(
-                  OpenCharArray& copyTo ) const;
-
-  void copyToOpenCharArrayNull(
-                  OpenCharArray& copyTo ) const;
-
-  void copyFromOpenCharArrayNoNull(
-                  const OpenCharArray& copyFrom );
-
-  void copyFromOpenCharArrayNull(
-                  const OpenCharArray& copyFrom );
-
-  void appendChar( const char toSet );
-
-  void appendCharPt( const char* pStr );
-
-  void appendCharArray( const ByteArray& toAdd,
-                        const Int32 howMany );
-
-  void appendCharBuf( const CharBuf& charBuf );
 
   inline char getC( const Int32 where ) const
     {
@@ -131,18 +109,22 @@ return bArray.getVal( where );
 
     cArray.setC( where, toSet );
     }
+*/
 
 
-  inline void setU8( const Int32 where,
-                     const Uint8 toSet )
-    {
-    if( where >= last )
-      throw "CharBuf.setU8 where past last.";
 
-    cArray.setU8( where, toSet );
-    }
+internal void setU8( int where,
+                     byte toSet )
+{
+if( where >= last )
+  throw new Exception( 
+        "ByteBuf.setU8 where past last." );
+
+bArray.setVal( where, toSet );
+}
 
 
+/*
   inline void fillBytes( const Uint8 toSet,
                          const Int32 howMany )
     {
@@ -152,7 +134,6 @@ return bArray.getVal( where );
 
     }
 
-  void setFromHexTo256( const CharBuf& hexBuf );
 
   inline void xorFrom( const CharBuf& fromBuf )
     {
@@ -168,11 +149,6 @@ return bArray.getVal( where );
       }
     }
 
-  bool searchMatches( const Int32 position,
-                  const CharBuf& toFind ) const;
-
-  Int32 findText( const CharBuf& toFind,
-                  const Int32 startAt ) const;
 
   static inline char toLower(
                        const char fromChar )
@@ -190,90 +166,31 @@ return bArray.getVal( where );
     // Or xor that fifth bit.
     // return fromChar xor fifth;
     }
-
-  bool contains( const CharBuf& toFind ) const;
-
-  };
+*/
 
 
 
-// Copyright Eric Chauvin 2022 - 2024.
-
-
-
-// This is licensed under the GNU General
-// Public License (GPL).  It is the
-// same license that Linux has.
-// https://www.gnu.org/licenses/gpl-3.0.html
-
-
-
-#include "CharBuf.h"
-#include "StIO.h"
-#include "Casting.h"
-#include "ByteHex.h"
-
-
-
-CharBuf::CharBuf( const char* pStr )
-{
-setFromCharPoint( pStr );
-}
-
-
-#include "../CppMem/MemoryWarnTop.h"
-
-void CharBuf::setFromCharPoint(
-                         const char* pStr )
+internal void setFromAsciiStr( string setFrom )
 {
 last = 0;
-if( pStr == nullptr )
+int max = setFrom.Length;
+if( max == 0 )
   return;
-
-const char* sizePoint = pStr;
-
-Int32 strSize = 0;
-
-// Make it a reasonable loop count so it
-// doesn't go forever if it never finds null.
-
-bool foundNull = false;
-for( Int32 count = 0; count < 5000; count++ )
-  {
-  char c = *sizePoint;
-  if( c == 0 )
-    {
-    foundNull = true;
-    break;
-    }
-
-  sizePoint++;
-  strSize++;
-  }
-
-if( !foundNull )
-  return;
-
-const Int32 max = strSize;
 
 setSize( max + 1 );
 
-for( Int32 count = 0; count < max; count++ )
+for( int count = 0; count < max; count++ )
   {
-  char c = *pStr;
-  cArray.setC( last, c );
-  last++;
-  pStr++;
+  byte b = (byte)(setFrom[count] & 0x7F);
+  appendU8( b );
   }
 }
 
 
 
-#include "../CppMem/MemoryWarnBottom.h"
 
 
-
-
+/*
 void CharBuf::setFromInt64( const Int64 inN )
 {
 Int64 n = inN;
@@ -370,32 +287,19 @@ for( Int32 count = lastTemp - 1; count >= 0;
   appendChar( tempBuf.getC( count ));
   }
 }
+*/
 
 
 
-CharBuf::CharBuf( const CharBuf& in )
+
+internal void increaseSize( int howMuch )
 {
-if( in.testForCopy )
-  return;
-
-throw "CharBuf copy constructor called.";
-}
-
-
-void CharBuf::setSize( const Int32 howBig )
-{
-last = 0;
-cArray.setSize( howBig );
-}
-
-
-void CharBuf::increaseSize( const Int32 howMuch )
-{
-cArray.increaseSize( howMuch );
+bArray.increaseSize( howMuch );
 }
 
 
 
+/*
 void CharBuf::appendChar( const char toSet )
 {
 // It's good if you can set the size ahead
@@ -461,31 +365,29 @@ appendU8( toAdd );
 internal void appendU64( ulong toSet )
 {
 // Big endian.
-byte toAdd = (byte)(toSet >> (7 * 8));
+byte toAdd = (byte)( toSet >> (7 * 8));
 appendU8( toAdd );
 
-/*
-toAdd = Casting::u64ToU8( toSet >> (6 * 8) );
+toAdd = (byte)( toSet >> (6 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet >> (5 * 8) );
+toAdd = (byte)( toSet >> (5 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet >> (4 * 8) );
+toAdd = (byte)( toSet >> (4 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet >> (3 * 8) );
+toAdd = (byte)( toSet >> (3 * 8));
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet >> (2 * 8) );
+toAdd = (byte)( toSet >> (2 * 8) );
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet >> (1 * 8) );
+toAdd = (byte)( toSet >> (1 * 8) );
 appendU8( toAdd );
 
-toAdd = Casting::u64ToU8( toSet );
+toAdd = (byte)( toSet );
 appendU8( toAdd );
-*/
 }
 
 
@@ -612,22 +514,23 @@ for( Int32 count = 0; count < howMany; count++ )
   last++;
   }
 }
+*/
 
 
-void CharBuf::appendCharBuf( const CharBuf& charBuf )
+
+internal void appendByteBuf( ByteBuf byteBuf )
 {
-const Int32 howMany = charBuf.getLast();
+int howMany = byteBuf.getLast();
 
-if( (last + howMany + 2) >= cArray.getSize() )
+if( (last + howMany + 2) >= bArray.getSize() )
   increaseSize( howMany + (1024 * 16) );
 
-for( Int32 count = 0; count < howMany; count++ )
+for( int count = 0; count < howMany; count++ )
   {
-  cArray.setC( last, charBuf.getC( count ));
+  bArray.setVal( last, byteBuf.getU8( count ));
   last++;
   }
 }
-*/
 
 
 
@@ -782,8 +685,6 @@ return true;
 }
 
 
-#include "../CppMem/MemoryWarnTop.h"
-
 
 void CharBuf::appendCharPt( const char* pStr )
 {
@@ -820,9 +721,6 @@ for( Int32 count = 0; count < max; count++ )
 }
 
 
-#include "../CppMem/MemoryWarnBottom.h"
-
-
 
 void CharBuf::reverse( void )
 {
@@ -856,15 +754,13 @@ int max = getLast();
 for( int count = 0; count < max; count++ )
   {
   byte oneByte = getU8( count );
-/*
-  char leftC = ByteHex::getLeftChar( oneByte );
-  StIO::putChar( leftC );
-  char rightC = ByteHex::getRightChar( oneByte );
-  StIO::putChar( rightC );
-  StIO::putChar( ' ' );
-*/
-  }
 
+  char leftC = ByteHex.getLeftChar( oneByte );
+  result += leftC;
+  char rightC = ByteHex.getRightChar( oneByte );
+  result += rightC;
+  result += ' ';
+  }
 
 return result;
 }
