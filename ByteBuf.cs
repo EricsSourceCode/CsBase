@@ -117,7 +117,7 @@ internal void setU8( int where,
                      byte toSet )
 {
 if( where >= last )
-  throw new Exception( 
+  throw new Exception(
         "ByteBuf.setU8 where past last." );
 
 bArray.setVal( where, toSet );

@@ -86,7 +86,7 @@ File.Copy( fromFile, toFile, overWrite );
 }
 
 
-static internal string readAllText( 
+static internal string readAllText(
                         string fromFile )
 {
 return File.ReadAllText( fromFile,
@@ -95,7 +95,7 @@ return File.ReadAllText( fromFile,
 
 
 
-static internal void writeAllText( 
+static internal void writeAllText(
                         string toFile,
                         string toWrite )
 {
