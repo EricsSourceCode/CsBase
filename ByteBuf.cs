@@ -124,6 +124,8 @@ bArray.setVal( where, toSet );
 }
 
 
+
+
 /*
   inline void fillBytes( const Uint8 toSet,
                          const Int32 howMany )

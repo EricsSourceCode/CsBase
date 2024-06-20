@@ -31,5 +31,17 @@ return toTest + "this and that.";
 }
 
 
+internal static string trim( string toCheck )
+{
+return toCheck.Trim();
+}
+
+
+internal static string toLower( string toCheck )
+{
+return toCheck.ToLower();
+}
+
+
 
 } // Class
