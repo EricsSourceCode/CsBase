@@ -18,6 +18,24 @@ using System;
 
 public static class Str
 {
+internal static char charAt( string inS,
+                             int where )
+{
+if( where < 0 )
+  throw new Exception( "Str.charAt < 0" );
+
+int last = inS.Length;
+if( where >= last )
+  throw new Exception( "Str.charAt >= last" );
+
+return inS[where];
+}
+
+
+
+
+
+
 internal static bool contains( string toCheck,
                                string pattern )
 {
@@ -25,9 +43,11 @@ return toCheck.Contains( pattern );
 }
 
 
-internal static string forTest( string toTest )
+internal static string replace( string toChange,
+                                string toRepl,
+                                string replWith )
 {
-return toTest + "this and that.";
+return toChange.Replace( toRepl, replWith );
 }
 
 
