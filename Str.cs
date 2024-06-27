@@ -34,8 +34,6 @@ return inS[where];
 
 
 
-
-
 internal static bool contains( string toCheck,
                                string pattern )
 {
@@ -60,6 +58,21 @@ return toCheck.Trim();
 internal static string toLower( string toCheck )
 {
 return toCheck.ToLower();
+}
+
+
+internal static bool startsWith( string line,
+                                 string toCheck )
+{
+return line.StartsWith( toCheck );
+}
+
+
+
+internal static bool endsWith( string line,
+                               string toCheck )
+{
+return line.EndsWith( toCheck );
 }
 
 

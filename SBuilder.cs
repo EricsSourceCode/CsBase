@@ -22,19 +22,31 @@ public class SBuilder
 private StringBuilder sBuild;
 
 
-public SBuilder()
+internal SBuilder()
 {
 sBuild = new StringBuilder();
 }
 
 
-public void appendChar( char c )
+internal void clear()
+{
+sBuild.Clear();
+}
+
+
+internal void appendChar( char c )
 {
 sBuild.Append( c );
 }
 
 
-public string toString()
+internal void appendStr( string s )
+{
+sBuild.Append( s );
+}
+
+
+internal string toString()
 {
 return sBuild.ToString();
 }
