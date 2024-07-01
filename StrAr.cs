@@ -19,7 +19,7 @@ using System;
 public class StrAr
 {
 private string[] mainAr;
-// private int[] sortIndexArray;
+private int[] sortIndexArray;
 private int last = 0;
 
 
@@ -28,8 +28,8 @@ private int last = 0;
 internal StrAr()
 {
 // try
-// mainAr = new  string[arraySize];
-// sortIndexArray = new int[arraySize];
+mainAr = new  string[2];
+sortIndexArray = new int[2];
 }
 
 
@@ -39,6 +39,9 @@ return last;
 }
 
 
+
+
+// getSortedStrAt()
 internal string getStrAt( int where )
 {
 if( where < 0 )
@@ -46,6 +49,8 @@ if( where < 0 )
 
 if( where >= last )
   return "";
+
+// sortIndexArray
 
 return mainAr[where];
 }
@@ -55,8 +60,7 @@ return mainAr[where];
 internal void freeAll()
 {
 last = 0;
-mainAr = null;
-// sortIndexArray = null;
+resizeArrays( 2 );
 }
 
 
@@ -67,8 +71,53 @@ Char[] delimArray = new Char[] { delim };
 
 mainAr = inS.Split( delimArray );
 last = mainAr.Length;
+sortIndexArray = new int[last];
 }
 
+
+
+
+private void resizeArrays( int newSize )
+{
+int oldSize = mainAr.Length;
+
+try
+{
+Array.Resize( ref mainAr, newSize );
+Array.Resize( ref sortIndexArray, newSize );
+
+if( newSize > oldSize )
+  {
+  for( int count = oldSize; count < newSize;
+                                    count++ )
+    {
+    // An array of structs would get initialized,
+    // but not an array of objects.
+
+    // Does this need to be done for strings?
+    mainAr[count] = "";
+    }
+  }
+}
+catch( Exception ) // Except )
+  {
+  throw new Exception( 
+              "Not enough memory for StrAr." );
+  }
+}
+
+
+
+
+internal void append( string inS )
+{
+int arSize = mainAr.Length;
+if( (last + 1) >= arSize )
+  resizeArrays( arSize + 1024 );
+
+mainAr[last] = inS;
+last++;
+}
 
 
 
