@@ -101,7 +101,7 @@ if( newSize > oldSize )
 }
 catch( Exception ) // Except )
   {
-  throw new Exception( 
+  throw new Exception(
               "Not enough memory for StrAr." );
   }
 }
