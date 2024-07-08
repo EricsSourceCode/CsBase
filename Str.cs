@@ -77,4 +77,26 @@ return line.EndsWith( toCheck );
 
 
 
+internal static string cleanAscii( string line )
+{
+SBuilder sBuild = new SBuilder();
+
+int last = line.Length;
+for( int count = 0; count < last; count++ )
+  {
+  char c = line[count];
+  if( c < ' ' )
+    continue;
+
+  if( c > '~' ) // ~ is Ascii 126
+    continue;
+
+  sBuild.appendChar( c );
+  }
+
+return sBuild.toString();
+}
+
+
+
 } // Class
