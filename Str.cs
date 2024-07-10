@@ -99,4 +99,32 @@ return sBuild.toString();
 
 
 
+internal static string removeUpToC(
+                              string line,
+                              char delim )
+{
+SBuilder sBuild = new SBuilder();
+
+int last = line.Length;
+bool foundIt = false;
+
+for( int count = 0; count < last; count++ )
+  {
+  char c = line[count];
+  if( !foundIt )
+    {
+    if( c == delim )
+      foundIt = true;
+
+    continue;
+    }
+
+  sBuild.appendChar( c );
+  }
+
+return sBuild.toString();
+}
+
+
+
 } // Class
