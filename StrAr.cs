@@ -64,6 +64,13 @@ resizeArrays( 2 );
 }
 
 
+internal void clear()
+{
+last = 0;
+// resizeArrays( 2 );
+}
+
+
 
 internal void split( string inS, char delim )
 {
