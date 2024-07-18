@@ -407,45 +407,45 @@ utcTime = new DateTime( toCopy.getYear(),
     return (ulong)UTCTime.Ticks;
     }
 /////////
+*/
 
 
 
+internal ulong getIndex()
+{
+// 16 bits is enough for the year
+//   6,500 or so.  (64K)
+ulong Result = (uint)utcTime.Year;
 
-  internal ulong GetIndex()
-    {
-    // 16 bits is enough for the year
-    //   6,500 or so.  (64K)
-    ulong Result = (uint)UTCTime.Year;
+Result <<= 4; // Room for a month up to 16.
+Result |= (uint)utcTime.Month;
 
-    Result <<= 4; // Room for a month up to 16.
-    Result |= (uint)UTCTime.Month;
+Result <<= 5; // 32 days.
+Result |= (uint)utcTime.Day;
 
-    Result <<= 5; // 32 days.
-    Result |= (uint)UTCTime.Day;
+Result <<= 5; // 32 hours.
+Result |= (uint)utcTime.Hour;
 
-    Result <<= 5; // 32 hours.
-    Result |= (uint)UTCTime.Hour;
+Result <<= 6; // 64 minutes.
+Result |= (uint)utcTime.Minute;
 
-    Result <<= 6; // 64 minutes.
-    Result |= (uint)UTCTime.Minute;
+Result <<= 6; // 64 seconds.
+Result |= (uint)utcTime.Second;
 
-    Result <<= 6; // 64 seconds.
-    Result |= (uint)UTCTime.Second;
+Result <<= 10;  // 1024 milliseconds.
+Result |= (uint)utcTime.Millisecond;
 
-    Result <<= 10;  // 1024 milliseconds.
-    Result |= (uint)UTCTime.Millisecond;
+// 16 + 5 + 4 + 5 + 6 + 6 + 10.
+// (16 + 5) + (4 + 5) + (6 + 6) + 10.
+// 21 +          9 +      12    + 10
+// 30 +      22
+// 52 bits wide.
 
-    // 16 + 5 + 4 + 5 + 6 + 6 + 10.
-    // (16 + 5) + (4 + 5) + (6 + 6) + 10.
-    // 21 +          9 +      12    + 10
-    // 30 +      22
-    // 52 bits wide.
-
-    return Result;
-    }
-
+return Result;
+}
 
 
+/*
   internal ulong GetTimeIndexShort()
     {
     // The 2-digit year takes up to 7 bits.
@@ -497,7 +497,7 @@ utcTime = new DateTime( 1900,
 internal static int GetUTCMonthFromTimeIndex(
                        ulong Index )
     {
-    // Index >>= 10; 
+    // Index >>= 10;
           // Shift off the milliseconds.
     // Index >>= 6; // Seconds
     // Index >>= 6; // Minutes
@@ -511,7 +511,7 @@ internal static int GetUTCMonthFromTimeIndex(
 
 
 
-  internal void SetFromLocalDateTime( 
+  internal void SetFromLocalDateTime(
                           DateTime SetFrom )
     {
     UTCTime = SetFrom.ToUniversalTime();
@@ -602,7 +602,7 @@ if( year <= 1900 )
 
 try
 {
-DateTime LocalTime = new DateTime( 
+DateTime LocalTime = new DateTime(
                             year,
                             month,
                             day,
@@ -866,6 +866,3 @@ catch( Exception )
 
 
 } // Class
-
-
-
