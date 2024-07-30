@@ -399,15 +399,14 @@ utcTime = new DateTime( toCopy.getYear(),
                             // DateTimeKind.Local
 
     }
-
-
-//////////
-  internal ulong GetTicks()
-    {
-    return (ulong)UTCTime.Ticks;
-    }
-/////////
 */
+
+
+
+internal ulong getTicks()
+{
+return (ulong)utcTime.Ticks;
+}
 
 
 
