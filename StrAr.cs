@@ -19,7 +19,7 @@ using System;
 public class StrAr
 {
 private string[] mainAr;
-private int[] sortIndexArray;
+// private int[] sortIndexArray;
 private int last = 0;
 
 
@@ -29,7 +29,7 @@ internal StrAr()
 {
 // try
 mainAr = new  string[2];
-sortIndexArray = new int[2];
+// sortIndexArray = new int[2];
 }
 
 
@@ -78,7 +78,7 @@ Char[] delimArray = new Char[] { delim };
 
 mainAr = inS.Split( delimArray );
 last = mainAr.Length;
-sortIndexArray = new int[last];
+// sortIndexArray = new int[last];
 }
 
 
@@ -91,7 +91,7 @@ int oldSize = mainAr.Length;
 try
 {
 Array.Resize( ref mainAr, newSize );
-Array.Resize( ref sortIndexArray, newSize );
+// Array.Resize( ref sortIndexArray, newSize );
 
 if( newSize > oldSize )
   {
@@ -124,6 +124,21 @@ if( (last + 1) >= arSize )
 
 mainAr[last] = inS;
 last++;
+}
+
+
+
+internal void copy( StrAr toCopy )
+{
+last = 0;
+int toCopyLast = toCopy.getLast();
+resizeArrays( toCopyLast + 2 );
+
+// sortIndexArray.copy( what? );
+
+for( int count = 0; count < toCopyLast; count++ )
+  append( toCopy.getStrAt( count ));
+
 }
 
 
