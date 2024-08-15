@@ -42,4 +42,24 @@ return Math.Exp( x );
 
 
 
+
+internal static int strToInt( string inS,
+                              int def )
+{
+int result = 0;
+
+try
+{
+result = Int32.Parse( inS );
+}
+catch( Exception )
+  {
+  return def; // default
+  }
+
+return result;
+}
+
+
+
 } // Class
