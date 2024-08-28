@@ -250,8 +250,10 @@ return utcTime.ToShortTimeString();
 
 internal string toLocalDateString()
 {
-return utcTime.ToLocalTime().
-                        ToShortDateString();
+return "" + getLocalMonth() + "/" +
+            getLocalDay() + "/" +
+            getLocalYear();
+
 }
 
 
@@ -787,25 +789,27 @@ catch( Exception )
 
 internal string toDelimStr()
 {
-// 2024;3;7;10;13;17;877828000
-
-return "" + getLocalYear() + ";" +
-       getLocalMonth() + ";" +
-       getLocalDay() + ";" +
-       getLocalHour() + ";" +
-       getLocalMinute() + ";" +
-       getLocalSecond() + ";" +
-       "0;"; // millisec.  0 to 999.
+// UTC time.
+return "" + getYear() + MarkersAI.DateTimeDelim +
+       getMonth() + MarkersAI.DateTimeDelim +
+       getDay() + MarkersAI.DateTimeDelim +
+       getHour() + MarkersAI.DateTimeDelim +
+       getMinute() + MarkersAI.DateTimeDelim +
+       getSecond() + MarkersAI.DateTimeDelim +
+       "0" + MarkersAI.DateTimeDelim;
+       // millisec.  0 to 999.
 
 }
 
 
 
-internal void setFromDelim( string inS )
+internal void setFromOldJavaDelim( string inS )
 {
 try
 {
 setToYear1900();
+
+// private DateTime utcTime;
 
 int year = 1;
 int month = 1;
@@ -841,7 +845,7 @@ if( last > 5 )
 
 // millisec has to be 0 through 999.
 // if( last > 6 )
-//   millisec = Int32.Parse( fields.getStrAt( 6 ));
+//   millisec = Int32.Parse(
 
 
 utcTime = new DateTime( year,
@@ -853,10 +857,79 @@ utcTime = new DateTime( year,
                         millisec,
                         DateTimeKind.Local );
 
+                      // DateTimeKind.Utc
+                      // DateTimeKind.Local
+
 }
 catch( Exception )
   {
-  throw new Exception( "TimeEC setFromDelim" );
+  throw new Exception(
+                "TimeEC setFromOldJavaDelim" );
+  }
+}
+
+
+
+
+internal void setFromMarkerDelim( string inS )
+{
+try
+{
+setToYear1900();
+
+int year = 1;
+int month = 1;
+int day = 1;
+int hour = 0;
+int minute = 0;
+int second = 0;
+int millisec = 0;
+
+StrAr fields = new StrAr();
+fields.split( inS, MarkersAI.DateTimeDelim );
+int last = fields.getLast();
+if( last < 1 )
+  return;
+
+year = Int32.Parse( fields.getStrAt( 0 ));
+
+if( last > 1 )
+month = Int32.Parse( fields.getStrAt( 1 ));
+
+if( last > 2 )
+  day = Int32.Parse( fields.getStrAt( 2 ));
+
+if( last > 3 )
+  hour = Int32.Parse( fields.getStrAt( 3 ));
+
+if( last > 4 )
+  minute = Int32.Parse( fields.getStrAt( 4 ));
+
+if( last > 5 )
+  second = Int32.Parse( fields.getStrAt( 5 ));
+
+
+// millisec has to be 0 through 999.
+// if( last > 6 )
+//   millisec = Int32.Parse(
+
+
+utcTime = new DateTime( year,
+                        month,
+                        day,
+                        hour,
+                        minute,
+                        second,
+                        millisec,
+                        DateTimeKind.Utc );
+
+                      // DateTimeKind.Local
+
+}
+catch( Exception )
+  {
+  throw new Exception(
+                "TimeEC setFromMarkersDelim" );
   }
 }
 
