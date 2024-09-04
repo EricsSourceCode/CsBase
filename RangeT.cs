@@ -28,7 +28,7 @@ if( where < min )
 
 if( where > max )
   throw new Exception(
-            "Range test mex: " + showS );
+            "Range test max: " + showS );
 
 }
 
