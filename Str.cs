@@ -34,6 +34,16 @@ return inS[where];
 
 
 
+/*
+internal static bool containsChar( string toCheck,
+                                   Char letter )
+{
+// This is not there.
+return toCheck.Contains( letter );
+}
+*/
+
+
 internal static bool contains( string toCheck,
                                string pattern )
 {
