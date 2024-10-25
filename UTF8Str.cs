@@ -73,112 +73,113 @@ Low Surrogates (DC00DFFF)
 
 
 
-  static class UTF8Strings
-  {
+static class UTF8Str
+{
 
-  internal static byte[] StringToBytes(
+internal static byte[] stringToBytes(
                              string InString )
+{
+if( InString == null )
+  return null;
+
+if( InString.Length == 0 )
+  return null;
+
+// UTF-16 is "either one or two 16-bit code _units_ per code point.
+// One Char in a Windows string is a code unit.
+
+// But "All code points in the BMP are accessed as a single code unit
+// in UTF-16 encoding and can be encoded in one, two or three bytes in
+// UTF-8".
+
+// Bits
+//  7  U+007F  0xxxxxxx
+// 11  U+07FF  110xxxxx  10xxxxxx
+// 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
+
+// 21  U+1FFFFF  11110xxx  10xxxxxx  10xxxxxx  10xxxxxx
+// 26  U+3FFFFFF  111110xx  10xxxxxx  10xxxxxx  10xxxxxx  10xxxxxx
+// 31  U+7FFFFFFF  1111110x  10xxxxxx  10xxxxxx  10xxxxxx  10xxxxxx  10x
+
+// try
+byte[] Result = new byte[InString.Length * 3];
+
+int Where = 0;
+for( int Count = 0; Count < InString.Length; Count++ )
+  {
+  char Character = InString[Count];
+  if( Character <= 0x7F )
     {
-    if( InString == null )
-      return null;
+    // Regular ASCII.
+    Result[Where] = (byte)Character;
+    Where++;
+    continue;
+    }
 
-    if( InString.Length == 0 )
-      return null;
+  if( Character >= 0xD800 ) // High Surrogates
+    {
+    // Result[Where] = (byte)'#'; // Ignore anything above high surrogates.
+    Where++;
+    continue;
+    }
 
-    // UTF-16 is "either one or two 16-bit code _units_ per code point.
-    // One Char in a Windows string is a code unit.
+  // "the first byte unambiguously indicates the length of the
+  // sequence in bytes."
+  // "All continuation bytes (byte nos. 26 in the table above) have
+  // 10 as their two most-significant bits."
 
-    // But "All code points in the BMP are accessed as a single code unit
-    // in UTF-16 encoding and can be encoded in one, two or three bytes in
-    // UTF-8".
+  // character "" = code point U+00A2
+  // = 00000000 10100010
+  //  11000010 10100010
+  //  hexadecimal C2 A2
+  // = 00000000 10 100010
 
-    // Bits
-    //  7  U+007F  0xxxxxxx
-    // 11  U+07FF  110xxxxx  10xxxxxx
-    // 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
+  //  7  U+007F  0xxxxxxx
+  // 11  U+07FF  110xxxxx  10xxxxxx
+  // 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
 
-    // 21  U+1FFFFF  11110xxx  10xxxxxx  10xxxxxx  10xxxxxx
-    // 26  U+3FFFFFF  111110xx  10xxxxxx  10xxxxxx  10xxxxxx  10xxxxxx
-    // 31  U+7FFFFFFF  1111110x  10xxxxxx  10xxxxxx  10xxxxxx  10xxxxxx  10x
+  if( (Character > 0x7F) && (Character <= 0x7FF) )
+    {
+    // Notice that this conversion from characters to bytes
+    // doesn't involve characters over 0x7F.
+    byte SmallByte = (byte)(Character & 0x3F); // Bottom 6 bits.
+    byte BigByte = (byte)((Character >> 6) & 0x1F); // Big 5 bits.
 
-    // try
-    byte[] Result = new byte[InString.Length * 3];
-
-    int Where = 0;
-    for( int Count = 0; Count < InString.Length; Count++ )
-      {
-      char Character = InString[Count];
-      if( Character <= 0x7F )
-        {
-        // Regular ASCII.
-        Result[Where] = (byte)Character;
-        Where++;
-        continue;
-        }
-
-      if( Character >= 0xD800 ) // High Surrogates
-        {
-        // Result[Where] = (byte)'#'; // Ignore anything above high surrogates.
-        Where++;
-        continue;
-        }
-
-      // "the first byte unambiguously indicates the length of the
-      // sequence in bytes."
-      // "All continuation bytes (byte nos. 26 in the table above) have
-      // 10 as their two most-significant bits."
-
-     // character "" = code point U+00A2
-     // = 00000000 10100010
-     //  11000010 10100010
-     //  hexadecimal C2 A2
-     // = 00000000 10 100010
-
-      //  7  U+007F  0xxxxxxx
-      // 11  U+07FF  110xxxxx  10xxxxxx
-      // 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
-      if( (Character > 0x7F) && (Character <= 0x7FF) )
-        {
-        // Notice that this conversion from characters to bytes
-        // doesn't involve characters over 0x7F.
-        byte SmallByte = (byte)(Character & 0x3F); // Bottom 6 bits.
-        byte BigByte = (byte)((Character >> 6) & 0x1F); // Big 5 bits.
-
-        BigByte |= 0xC0; // Mark it as the beginning byte.
-        SmallByte |= 0x80; // Mark it as a continuing byte.
-        Result[Where] = BigByte;
-        Where++;
-        Result[Where] = SmallByte;
-        Where++;
-        }
-
-
-      // 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
-      if( Character > 0x7FF ) // && (Character < 0xD800) )
-        {
-        byte Byte3 = (byte)(Character & 0x3F); // Bottom 6 bits.
-        byte Byte2 = (byte)((Character >> 6) & 0x3F); // Next 6 bits.
-        byte BigByte = (byte)((Character >> 12) & 0x0F); // Biggest 4 bits.
-
-        BigByte |= 0xE0; // Mark it as the beginning byte.
-        Byte2 |= 0x80; // Mark it as a continuing byte.
-        Byte3 |= 0x80; // Mark it as a continuing byte.
-        Result[Where] = BigByte;
-        Where++;
-        Result[Where] = Byte2;
-        Where++;
-        Result[Where] = Byte3;
-        Where++;
-        }
-      }
-
-    Array.Resize( ref Result, Where );
-    return Result;
+    BigByte |= 0xC0; // Mark it as the beginning byte.
+    SmallByte |= 0x80; // Mark it as a continuing byte.
+    Result[Where] = BigByte;
+    Where++;
+    Result[Where] = SmallByte;
+    Where++;
     }
 
 
+  // 16  U+FFFF  1110xxxx  10xxxxxx  10xxxxxx
+  if( Character > 0x7FF ) // && (Character < 0xD800) )
+    {
+    byte Byte3 = (byte)(Character & 0x3F); // Bottom 6 bits.
+    byte Byte2 = (byte)((Character >> 6) & 0x3F); // Next 6 bits.
+    byte BigByte = (byte)((Character >> 12) & 0x0F); // Biggest 4 bits.
+
+    BigByte |= 0xE0; // Mark it as the beginning byte.
+    Byte2 |= 0x80; // Mark it as a continuing byte.
+    Byte3 |= 0x80; // Mark it as a continuing byte.
+    Result[Where] = BigByte;
+    Where++;
+    Result[Where] = Byte2;
+    Where++;
+    Result[Where] = Byte3;
+    Where++;
+    }
+  }
+
+Array.Resize( ref Result, Where );
+return Result;
+}
 
 
+
+/*
   internal static string BytesToString( byte[] InBytes, int MaxLen )
     {
     // int Test = 1;

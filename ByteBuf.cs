@@ -41,6 +41,24 @@ catch( Exception ) //  Except )
 }
 
 
+internal void setFromByteArray( byte[] bArray )
+{
+last = 0;
+int max = bArray.Length;
+if( max == 0 )
+  return;
+
+setSize( max + 1 );
+
+for( int count = 0; count < max; count++ )
+  {
+  byte b = bArray[count];
+  appendU8( b );
+  }
+}
+
+
+
 internal void setSize( int howBig )
 {
 last = 0;
