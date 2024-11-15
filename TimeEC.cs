@@ -631,38 +631,38 @@ catch( Exception )
                                    UTCTime );
     return TimeDif.TotalDays;
     }
-
-
-  internal double GetHoursToNow()
-    {
-    DateTime RightNow = DateTime.UtcNow;
-    TimeSpan TimeDif = RightNow.Subtract(
-                                   UTCTime );
-    return TimeDif.TotalHours;
-    }
-
-
-  internal double GetMinutesToNow()
-    {
-    DateTime RightNow = DateTime.UtcNow;
-    TimeSpan TimeDif = RightNow.Subtract(
-                                    UTCTime );
-    return TimeDif.TotalMinutes;
-    }
+*/
 
 
 
-  internal double GetSecondsToNow()
-    {
-    DateTime RightNow = DateTime.UtcNow;
-    TimeSpan TimeDif = RightNow.Subtract(
-                                    UTCTime );
-    return TimeDif.TotalSeconds;
-    }
+internal double getHoursToNow()
+{
+DateTime RightNow = DateTime.UtcNow;
+TimeSpan TimeDif = RightNow.Subtract( utcTime );
+return TimeDif.TotalHours;
+}
 
 
 
 
+internal double getMinutesToNow()
+{
+DateTime RightNow = DateTime.UtcNow;
+TimeSpan TimeDif = RightNow.Subtract( utcTime );
+return TimeDif.TotalMinutes;
+}
+
+
+internal double getSecondsToNow()
+{
+DateTime RightNow = DateTime.UtcNow;
+TimeSpan TimeDif = RightNow.Subtract( utcTime );
+return TimeDif.TotalSeconds;
+}
+
+
+
+/*
   internal double GetTotalMilliseconds()
     {
     TimeSpan TimeDif = UTCTime.Subtract(
