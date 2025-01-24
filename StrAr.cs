@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2024.
+// Copyright Eric Chauvin 2024 - 2025.
 
 
 
@@ -42,6 +42,7 @@ return last;
 
 
 // getSortedStrAt()
+
 internal string getStrAt( int where )
 {
 if( where < 0 )
