@@ -156,8 +156,8 @@ internal void setValueAnyID( Word value )
 string word = value.getWord();
 
 // the, and, by, a ...
-if( word.Length < 4 )
-  return;
+// if( word.Length < 4 )
+  // return;
 
 int pos = getPositionOfWord( word );
 if( pos >= 0 )
@@ -168,13 +168,36 @@ else
   {
   int arraySize = valueArray.Length;
   if( arrayLast >= arraySize )
-    resizeArrays( arraySize + 16 );
+    resizeArrays( arraySize + 1024 );
 
   valueArray[arrayLast].copy( value );
   arrayLast++;
   }
 }
 
+
+
+internal void setEmptyValue( Word value )
+{
+// This sets the Word if it's not there yet.
+
+string word = value.getWord();
+
+int pos = getPositionOfWord( word );
+if( pos >= 0 )
+  {
+  return;
+  }
+else
+  {
+  int arraySize = valueArray.Length;
+  if( arrayLast >= arraySize )
+    resizeArrays( arraySize + 1024 );
+
+  valueArray[arrayLast].copy( value );
+  arrayLast++;
+  }
+}
 
 
 

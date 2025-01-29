@@ -24,8 +24,9 @@ private WordDctLine[] lineArray;
 int highestIdNum = 0;
 int minArIndex = 0;
 
+// 15 bits for 3 characters.
 
-private const int keySize = 0x3FF;
+private const int keySize = 0x7FFF;
 
 
 
@@ -77,9 +78,18 @@ if( len == 0 )
 
 char char1 = wordIn[0];
 char char2 = (char)96;  // Little 'a' is 97.
+char char3 = (char)96;
+// char char4 = (char)96;
+
 
 if( len >= 2 )
   char2 = wordIn[1];
+
+if( len >= 3 )
+  char3 = wordIn[2];
+
+// if( len >= 4 )
+  // char4 = wordIn[3];
 
 // Little 'a' is 97.
 
@@ -89,15 +99,29 @@ if( char1 < 'a' )
 if( char2 < 'a' )
   char2 = (char)96;
 
+if( char3 < 'a' )
+  char3 = (char)96;
+
+// if( char4 < 'a' )
+  // char4 = (char)96;
+
 if( char1 > 'z' )
   char1 = 'z';
 
 if( char2 > 'z' )
   char2 = 'z';
 
+if( char3 > 'z' )
+  char3 = 'z';
+
+// if( char4 > 'z' )
+  // char4 = 'z';
+
 // 'a' - 96 is 1.  So there can be a zero.
 int index1 = char1 - 96;
 int index2 = char2 - 96;
+int index3 = char3 - 96;
+// int index4 = char4 - 96;
 
 if( index1 > 27 )
   {
@@ -107,13 +131,27 @@ if( index1 > 27 )
 
 if( index1 < 0 )
   {
-  throw new Exception( "index1 < 0." );
+  throw new Exception(
+               "WordDct: index1 < 0." );
   }
 
 if( index2 < 0 )
   {
-  throw new Exception( "index2 < 0." );
+  throw new Exception(
+            "WordDct: index2 < 0." );
   }
+
+if( index3 < 0 )
+  {
+  throw new Exception(
+              "WordDct: index3 < 0." );
+  }
+
+// if( index4 < 0 )
+  // {
+  // throw new Exception(
+  //            "WordDct: index4 < 0." );
+  // }
 
 // 5 bits.
 // int mask = 16 + 8 + 4 + 2 + 1;
@@ -123,12 +161,19 @@ if( index2 < 0 )
 int index = index1;
 index <<= 5;
 index |= index2;
+index <<= 5;
+index |= index3;
+// index <<= 5;
+// index |= index4;
+
 
 if( index < 0 )
-  throw new Exception( "index < 0" );
+  throw new Exception(
+                 "WordDct: index < 0" );
 
 if( index >= keySize )
-  throw new Exception( "index is too big." );
+  throw new Exception(
+             "WordDct: index is too big." );
 
 // index = index & keySize;
 // if( index == keySize )
@@ -155,6 +200,27 @@ if( word == null )
 int arIndex = getArIndex( word );
 
 lineArray[arIndex].setValueAnyID( value );
+}
+catch( Exception )
+  {
+  throw new Exception(
+       "WordDct Exception in setValue()." );
+  }
+}
+
+
+
+internal void setEmptyValue( Word value )
+{
+try
+{
+string word = value.getWord();
+if( word == null )
+  return;
+
+int arIndex = getArIndex( word );
+
+lineArray[arIndex].setEmptyValue( value );
 }
 catch( Exception )
   {
@@ -232,9 +298,10 @@ int last = lines.getLast();
 
 for( int count = 0; count < last; count++ )
   {
-  if( (count % 100) == 0 )
+  if( (count % 2000) == 0 )
     {
-    mData.showStatus( "Reading words..." );
+    mData.showStatus(
+                "Reading words " + count );
     if( !mData.checkEvents())
       return;
 
@@ -257,7 +324,7 @@ for( int count = 0; count < last; count++ )
 
   int arIndex = getArIndex( word.getWord());
   if( arIndex >= minArIndex )
-    lineArray[arIndex].setValueAnyID( word );
+    lineArray[arIndex].setEmptyValue( word );
 
   }
 }
