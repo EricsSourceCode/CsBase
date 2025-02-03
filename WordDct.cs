@@ -555,15 +555,15 @@ return false;
 
 
 
-internal void addWord( string wordS )
+internal int addWord( string wordS )
 {
 if( wordS == null )
-  return;
+  return 0;
 
 wordS = Str.toLower( wordS );
 wordS = Str.trim( wordS );
 if( wordS.Length < 1 )
-  return;
+  return 0;
 
 int arIndex = getArIndex( wordS );
 // if( arIndex < minArIndex )
@@ -571,8 +571,7 @@ int arIndex = getArIndex( wordS );
 
 if( lineArray[arIndex].keyExists( wordS ))
   {
-  lineArray[arIndex].incCount( wordS );
-  return;
+  return lineArray[arIndex].incCount( wordS );
   }
 
 // mData.showStatus( "New word: " + wordS );
@@ -586,6 +585,7 @@ toAdd.setCount( 1 );
 highestIdNum++;
 toAdd.setIdNum( highestIdNum );
 setValueAnyID( toAdd );
+return 1;
 }
 
 

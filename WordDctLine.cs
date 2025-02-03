@@ -316,13 +316,13 @@ toGet.copy( valueArray[sortIndexAr[where]] );
 
 
 
-internal void incCount( string word )
+internal int incCount( string word )
 {
 int pos = getPositionOfWord( word );
 if( pos < 0 )
-  return;
+  return 0;
 
-valueArray[pos].incCount();
+return valueArray[pos].incCount();
 }
 
 

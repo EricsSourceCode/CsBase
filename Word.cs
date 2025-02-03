@@ -128,9 +128,10 @@ return idNum;
 
 
 
-internal void incCount()
+internal int incCount()
 {
 count++;
+return count;
 }
 
 
